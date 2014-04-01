@@ -22,9 +22,23 @@ ss.client.templateEngine.use(require('ss-hogan'));
 // Minimize and pack assets if you type: SS_ENV=production node app.js
 if (ss.env === 'production') ss.client.packAssets();
 
+var config = {
+  redis: {
+    host: 'localhost',
+    port: 6379,
+    db: 4
+  },
+  port: 3000
+};
+
+
+ss.session.store.use('redis', config.redis);
+ss.publish.transport.use('redis', config.redis);
+
+
 // Start web server
 var server = http.Server(ss.http.middleware);
-server.listen(3000);
+server.listen(process.env.PORT || config.port);
 
 // Start SocketStream
 ss.start(server);
