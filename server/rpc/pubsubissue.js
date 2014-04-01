@@ -11,14 +11,23 @@ exports.actions = function(req, res, ss) {
 
   return {
 
-    sendMessage: function(message) {
-      if (message && message.length > 0) {         // Check for blank messages
-        ss.publish.all('newMessage', message);     // Broadcast the message to everyone
+    subscribeToChannel: function (channel) {
+      if (channel && channel.length > 0) {         // Check for blank channel
+        req.session.channel.subscribe(channel);
         return res(true);                          // Confirm it was sent to the originating client
       } else {
         return res(false);
       }
     },
+
+    publishMessage: function (channel, event, data) {
+      if (channel && channel.length > 0 && event && event.length > 0) { // Check for blank channel and event
+        ss.publish.channel(channel,event, data);
+        return res(true);                          // Confirm it was sent to the originating client
+      } else {
+        return res(false);
+      }
+    }
 
   };
 
