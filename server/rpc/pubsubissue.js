@@ -22,7 +22,7 @@ exports.actions = function(req, res, ss) {
 
     publishMessage: function (channel, event, data) {
       if (channel && channel.length > 0 && event && event.length > 0) { // Check for blank channel and event
-        ss.publish.channel(channel,event, data);
+        ss.publish.channel(channel, event, data);
         return res(true);                          // Confirm it was sent to the originating client
       } else {
         return res(false);
